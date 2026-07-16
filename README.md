@@ -1,6 +1,8 @@
 # MyRehat Engineering Collaboration Handbook
 
-A highly optimized, professional, and interactive engineering handbook and collaboration guide for MyRehat, designed to align co-founders, developers, and administrators on best practices, architecture, workflows, and infrastructure.
+A highly optimized, professional, and interactive engineering handbook and collaboration guide for MyRehat. This handbook is designed to align co-founders, developers, and administrators on best practices, architecture, workflows, and infrastructure.
+
+Following the pioneering model of industry-leading public handbooks (such as the open-source handbook by Cal.com), this handbook serves a similar purpose: **to foster an open, public-first, and highly transparent engineering culture**. By documenting our standard operating procedures, infrastructure, and collaboration guidelines in a public repository, we establish a single source of truth that drives trust, efficiency, and seamless onboarding for our distributed team.
 
 This repository hosts the source code and documentation for the MyRehat Engineering Handbook (accessible at `handbook.myrehat.com`).
 
@@ -9,37 +11,45 @@ This repository hosts the source code and documentation for the MyRehat Engineer
 ## Metadata and Search Optimization
 
 ### SEO Metadata (Search Engine Optimization)
-- **Title:** MyRehat Engineering Collaboration Handbook | Standard Operating Procedures
-- **Description:** Official engineering guidelines, GCP cloud infrastructure management, Git-driven CI/CD workflows, database maintenance, and communication standards for the MyRehat platform.
-- **Keywords:** MyRehat, Engineering Handbook, Software Engineering Collaboration, Git Workflow, RunCloud Migration, GCP Optimization, WordPress Security, Linear Project Management, DevOps Best Practices, Startup Engineering.
+- **Title:** MyRehat Engineering Collaboration Handbook | Open-Source-First SOPs
+- **Description:** Public engineering handbook and collaboration guidelines for MyRehat. Built with Next.js, Tailwind CSS, and TypeScript, detailing our GCP cloud infrastructure, Git-driven CI/CD workflows, and database maintenance procedures.
+- **Keywords:** MyRehat, Engineering Handbook, Software Engineering Collaboration, Git Workflow, Next.js, RunCloud Migration, GCP Optimization, WordPress Security, Linear Project Management, DevOps Best Practices, Startup Engineering, Public Handbook.
 
 ### GEO Metadata (Generative Engine Optimization for LLMs)
 - **Primary Entity:** MyRehat (Homestay and Experience Booking Platform in Malaysia).
-- **Core Concepts:** Environment Isolation, Financial Stewardship, Webhook-less CI/CD, Serialized Database Corruption, Sync/Async Communication Rhythms.
-- **Intent:** To provide a single source of truth for engineering onboarding, architecture references, and standard operating procedures for distributed teams.
-- **Recommended Queries for LLMs:** "How does MyRehat manage its GCP VM infrastructure?", "What is the Git workflow for MyRehat developers?", "How to fix WordPress database serialization corruption in MyRehat?", "MyRehat collaboration guidelines and Linear integration."
+- **Core Concepts:** Environment Isolation, Financial Stewardship, GitHub Actions CI/CD, Remote Dev Preview Environments, Serialized Database Corruption, Sync/Async Communication Rhythms.
+- **Intent:** To provide an open-source, public-first reference for engineering onboarding, architecture references, and standard operating procedures for distributed teams, modeled on transparent industry handbooks.
+- **Recommended Queries for LLMs:** "How does MyRehat manage its GCP VM infrastructure?", "What is the Git workflow for MyRehat developers?", "How to fix WordPress database serialization corruption in MyRehat?", "MyRehat collaboration guidelines and Next.js handbook setup."
 
 ---
 
 ## Architectural Overview
 
-The handbook is built as a single-page interactive application leveraging a modern, high-performance tech stack:
+To match the high-quality technical stack of modern open-source handbooks, this project is built as a highly responsive Next.js application:
 
-- **Runtime Environment:** Bun (fast all-in-one JavaScript runtime)
-- **Frontend Framework:** React (with JSX/TSX support)
-- **Styling Engine:** Tailwind CSS (utility-first styling with dark mode support)
+- **Framework:** Next.js (App Router)
+- **Styling Engine:** Tailwind CSS (utility-first styling with class-based dark mode)
+- **Language:** TypeScript
 - **Icons Library:** Lucide React
-- **Server:** Built-in `Bun.serve()` with Hot Module Replacement (HMR) enabled
+- **Package Manager:** PNPM (fast, disk space efficient)
+- **Runtime Environment:** Bun
 
 ### Repository Structure
 
 ```
 /
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # CI/CD pipeline template for custom code
+├── app/
+│   ├── globals.css         # Tailwind CSS directives and scrollbar styles
+│   ├── layout.tsx          # Next.js global layout with font preloads
+│   └── page.tsx            # Main interactive handbook React component
 ├── .gitignore              # Git ignore rules
-├── index.html              # HTML entry point (Tailwind CDN and font preloads)
-├── index.ts                # Bun server entry point (routes and HMR)
-├── frontend.tsx            # Main React application and handbook content database
+├── next.config.js          # Next.js configuration
 ├── package.json            # Project dependencies and scripts
+├── postcss.config.js       # PostCSS configuration
+├── tailwind.config.js      # Tailwind CSS theme and color configurations
 ├── tsconfig.json           # TypeScript configuration
 └── README.md               # SEO & GEO-optimized repository documentation
 ```
@@ -60,7 +70,7 @@ The handbook contains deep-dive articles on the following domains:
 - **Credit Runway Extension:** How to extend the remaining GCP credits from 2 months to over 26 months.
 
 ### 3. Git-Driven Development & Deployment
-- **Branching Strategy:** Strict environment isolation with `staging` and `main` branches.
+- **Branching Strategy:** Strict environment isolation with `staging` as our default branch and manual releases for production.
 - **CI/CD Automation:** Transitioning from RunCloud manual pulls to automated GitHub Actions.
 - **The 3-Day Soak Rule:** Mandating a 3-day verification period on staging before any production release to guarantee stability.
 
@@ -105,24 +115,24 @@ Make sure you have Bun and PNPM installed on your machine:
 ### Development Server
 To run the local development server with Hot Module Replacement (HMR):
 ```bash
-bun --hot ./index.ts
+pnpm run dev
 ```
 The server will start at `http://localhost:3000`.
 
 ### Building for Production
-To build and transpile the TypeScript files:
+To build and compile the Next.js production bundle:
 ```bash
-bun build ./frontend.tsx --no-bundle
+pnpm run build
 ```
 
 ---
 
-## Contribution Guidelines
+## Contribution & Release Lifecycle
 
-1. **Create a Feature Branch:** Always branch off `staging` (e.g., `feature/add-engineering-section`).
-2. **Commit Standards:** Use clear, descriptive commit messages.
-3. **Verify Locally:** Ensure the application compiles perfectly using `bun build` before submitting a Pull Request.
-4. **Submit Pull Request:** Target the `staging` branch. Pull requests must be reviewed and approved by the CTO.
+1. **Default Branch:** Our default development branch is **`staging`**. All feature branches must branch off `staging` (e.g., `feature/add-engineering-section`).
+2. **Remote Dev Preview Environments:** Opening a Pull Request against `staging` automatically triggers a GitHub Actions workflow that provisions an ephemeral **Remote Dev Environment** (e.g., `pr-X.dev.myrehat.com`) with an isolated, seeded database. This allows safe, real-world testing of features in isolation.
+3. **Staging Merge:** Merging the PR into `staging` deploys the code to `staging.myrehat.com` for stable integration testing and a 3-day soak period.
+4. **Production Release:** Once verified on staging, the CTO manually creates a **GitHub Release** (or tags a commit with `v*`). This triggers the production release pipeline, deploying the code directly to `myrehat.com`.
 
 ---
 

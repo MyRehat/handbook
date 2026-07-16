@@ -1,7 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import { createRoot } from "react-dom/client";
 import { 
-  Book, 
   Search, 
   Menu, 
   X, 
@@ -17,11 +17,9 @@ import {
   Info, 
   AlertTriangle, 
   CheckCircle, 
-  Code, 
   Copy, 
   Check, 
   ExternalLink,
-  DollarSign,
   TrendingDown,
   Clock,
   ShieldAlert
@@ -352,13 +350,13 @@ export default function Handbook() {
               </div>
               <ChevronRight className="rotate-90 md:rotate-0 text-slate-400" />
               <div className="p-3 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm font-semibold w-48">
-                GitHub: `staging` branch
-                <div className="text-xs text-brand-500 font-normal mt-1">Auto-deploy Webhook</div>
+                GitHub: Pull Request
+                <div className="text-xs text-brand-500 font-normal mt-1">Remote Dev Env</div>
               </div>
               <ChevronRight className="rotate-90 md:rotate-0 text-slate-400" />
               <div className="p-3 rounded bg-brand-500 text-white shadow-sm font-semibold w-48">
-                Staging Server
-                <div className="text-xs text-brand-100 font-normal mt-1">staging.myrehat.com</div>
+                Remote Dev Env
+                <div className="text-xs text-brand-100 font-normal mt-1">pr-X.dev.myrehat.com</div>
               </div>
             </div>
             
@@ -368,17 +366,17 @@ export default function Handbook() {
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-4">
               <div className="p-3 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm font-semibold w-48">
-                Pull Request &amp; Review
-                <div className="text-xs text-slate-500 font-normal mt-1">3-day soak period</div>
+                Merge PR (Staging)
+                <div className="text-xs text-slate-500 font-normal mt-1">staging branch</div>
               </div>
               <ChevronRight className="rotate-90 md:rotate-0 text-slate-400" />
               <div className="p-3 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm font-semibold w-48">
-                GitHub: `main` branch
-                <div className="text-xs text-brand-500 font-normal mt-1">Manual Deploy Trigger</div>
+                Staging Env
+                <div className="text-xs text-brand-500 font-normal mt-1">staging.myrehat.com</div>
               </div>
               <ChevronRight className="rotate-90 md:rotate-0 text-slate-400" />
               <div className="p-3 rounded bg-emerald-600 text-white shadow-sm font-semibold w-48">
-                Production Server
+                Production Release
                 <div className="text-xs text-emerald-100 font-normal mt-1">myrehat.com</div>
               </div>
             </div>
@@ -390,28 +388,28 @@ export default function Handbook() {
             <div className="p-4 rounded-lg border-l-4 border-rose-500 bg-white dark:bg-slate-800/50 shadow-sm">
               <h4 className="font-bold text-slate-900 dark:text-white">Rule 1: No Direct Editing</h4>
               <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                Files must **never** be edited directly on the staging or production servers via RunCloud, SSH, or WordPress theme editors. All code changes must be tracked in Git.
+                Files must **never** be edited directly on any environment via server dashboards or FTP. All code changes must be tracked in Git.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-lg border-l-4 border-blue-500 bg-white dark:bg-slate-800/50 shadow-sm">
+              <h4 className="font-bold text-slate-900 dark:text-white">Rule 2: Remote Dev Preview Environments</h4>
+              <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                Our default branch is **`staging`**. When a Pull Request is opened against `staging`, a GitHub Actions workflow automatically provisions an ephemeral **Remote Dev Environment** (e.g., `pr-X.dev.myrehat.com`) with isolated, seeded test databases. This allows safe previewing and review before code merges.
               </p>
             </div>
 
             <div className="p-4 rounded-lg border-l-4 border-brand-500 bg-white dark:bg-slate-800/50 shadow-sm">
-              <h4 className="font-bold text-slate-900 dark:text-white">Rule 2: Staging Auto-Deployment</h4>
+              <h4 className="font-bold text-slate-900 dark:text-white">Rule 3: Staging Verification</h4>
               <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                The `staging` branch is connected to RunCloud's staging app via a Git deployment webhook. Merging or pushing code into the `staging` branch triggers an automatic webhook deployment to `staging.myrehat.com`.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-lg border-l-4 border-amber-500 bg-white dark:bg-slate-800/50 shadow-sm">
-              <h4 className="font-bold text-slate-900 dark:text-white">Rule 3: The 3-Day Soak Period</h4>
-              <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                Every code change must spend a **soak period of at least 3 days on staging** before being merged to the `main` branch. This ensures adequate time for Farah and the team to test the functionality and identify regressions.
+                Merging a PR into `staging` deploys it automatically to `staging.myrehat.com`. This is our stable verification environment where all integrated features spend a soak period before release.
               </p>
             </div>
 
             <div className="p-4 rounded-lg border-l-4 border-emerald-500 bg-white dark:bg-slate-800/50 shadow-sm">
-              <h4 className="font-bold text-slate-900 dark:text-white">Rule 4: Main &amp; Production Deployments</h4>
+              <h4 className="font-bold text-slate-900 dark:text-white">Rule 4: Manual Production Releases</h4>
               <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
-                The `main` branch is connected to RunCloud's production app. Merges into `main` require Imam's review and approval. Deployments to `myrehat.com` are triggered **manually** via the RunCloud dashboard after staging verification is fully complete.
+                Production deployments to `myrehat.com` are strictly gated. Deployments are triggered **manually** by the CTO creating a GitHub Release or pushing a version release tag, ensuring full audit control.
               </p>
             </div>
           </div>
@@ -618,54 +616,63 @@ wp-content/
             CI/CD with GitHub Actions
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-            Instead of relying on RunCloud's simple pull webhooks, we have migrated to a robust, enterprise-grade CI/CD pipeline using **GitHub Actions**. This ensures that every code change is thoroughly tested, linted, and verified before hitting staging or production.
+            Instead of relying on legacy webhook pulls, we have migrated to a robust, enterprise-grade CI/CD pipeline using **GitHub Actions**. This ensures that every code change is thoroughly tested, linted, and verified before hitting staging or production.
           </p>
 
           <Callout type="success" title="Why GitHub Actions?">
-            RunCloud's webhook simply pulls code when triggered, meaning broken syntax, failing tests, or syntax errors can deploy directly to our servers and crash the site. GitHub Actions acts as a gatekeeper, validating our code first and only deploying if all checks pass.
+            Automated actions act as a gatekeeper, validating our code first and only deploying if all checks pass. This prevents broken code from ever reaching our active staging or production environments.
           </Callout>
 
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">1. Staging CI/CD Pipeline</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">1. Remote Dev Preview Environments</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-4">
-            When code is pushed or merged into the `staging` branch, GitHub Actions executes the following automated workflow:
+            Our branching strategy establishes **`staging`** as the default branch. Opening a Pull Request against `staging` triggers the Remote Dev workflow:
           </p>
 
           <div className="space-y-4 my-6">
             <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
-              <div className="font-bold text-slate-900 dark:text-white text-base">Step 1: Environment Setup</div>
+              <div className="font-bold text-slate-900 dark:text-white text-base">Step 1: Ephemeral Virtual Host Creation</div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Spins up an ephemeral runner, checks out the codebase, and sets up Node.js, Bun, and PNPM package manager.
+                Creates a new isolated directory on the Collab-Friendly VM and registers a subdomain (e.g., `pr-12.dev.myrehat.com`) via Cloudflare CLI (`cf`).
               </p>
             </div>
             <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
-              <div className="font-bold text-slate-900 dark:text-white text-base">Step 2: Install &amp; Validate</div>
+              <div className="font-bold text-slate-900 dark:text-white text-base">Step 2: Seeded Database Provisioning</div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Installs dependencies using `pnpm install --frozen-lockfile`. Runs syntax validation, ESLint, and TypeScript type checking (`tsc --noEmit`) to catch static analysis errors.
+                Spins up a new MySQL database, clones the staging database schema, and seeds it with sanitized/scrambled mock listing and host data.
               </p>
             </div>
             <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
-              <div className="font-bold text-slate-900 dark:text-white text-base">Step 3: Run Tests</div>
+              <div className="font-bold text-slate-900 dark:text-white text-base">Step 3: Isolated Testing &amp; Verification</div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Executes the unit and integration test suite using `bun test`. If any test fails, the workflow aborts immediately, preventing broken code from deploying.
+                Deploys the PR's custom child theme and plugin code to the new directory. Reviewers can test changes directly on the preview URL with zero risk to other environments.
               </p>
             </div>
             <div className="p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
-              <div className="font-bold text-slate-900 dark:text-white text-base">Step 4: Secure Deployment</div>
+              <div className="font-bold text-slate-900 dark:text-white text-base">Step 4: Auto-Cleanup</div>
               <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                Only if all checks pass, the runner securely connects to our staging server via SSH using encrypted GitHub Secrets (private keys) and pulls the verified code, restarting services if necessary.
+                When the Pull Request is merged or closed, the database is dropped, the directory is deleted, and the Cloudflare DNS record is removed automatically.
               </p>
             </div>
           </div>
 
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">2. Production CI/CD Pipeline</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">2. Staging Deployment</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-4">
-            Our production deployment is even more tightly controlled:
+            Merging the PR into the `staging` branch automatically triggers the staging deployment:
           </p>
           <ul className="space-y-2 text-slate-600 dark:text-slate-300 list-disc pl-5 mb-6">
-            <li><strong>Pull Request Gate:</strong> Code cannot be pushed directly to `main`. It must go through a Pull Request from `staging`. Creating a PR triggers the validation suite (lint, type check, test).</li>
-            <li><strong>Review Approval:</strong> Imam (CTO) must review and approve the PR.</li>
-            <li><strong>Soak Verification:</strong> The code must have successfully completed its 3-day soak period on staging.</li>
-            <li><strong>Manual Triggered Deploy:</strong> Once merged into `main`, deployment is triggered manually via GitHub Actions with full audit logging, or via a secure release tag.</li>
+            <li>Runs static analysis, ESLint, and TypeScript type checking.</li>
+            <li>Executes the unit and integration test suite via `bun test`.</li>
+            <li>Deploys the verified code securely via SSH/rsync to `staging.myrehat.com`.</li>
+          </ul>
+
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">3. Production Release</h2>
+          <p className="text-slate-600 dark:text-slate-300 mb-4">
+            When staging is verified and approved, the CTO manually creates a **GitHub Release** (or tags a commit with `v*`). This triggers the production release pipeline:
+          </p>
+          <ul className="space-y-2 text-slate-600 dark:text-slate-300 list-disc pl-5 mb-6">
+            <li>Takes an automated database and file snapshot of the production server.</li>
+            <li>Deploys the released tag codebase to `myrehat.com`.</li>
+            <li>Flushes Redis object caches and verifies system health.</li>
           </ul>
         </div>
       )
@@ -681,7 +688,7 @@ wp-content/
             Async-First &amp; Review Culture
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-            Adapted from **Cal.com's handbook**, our engineering team operates under an async-first philosophy. We prioritize deep, focused work over synchronous meetings, and use structured peer reviews to maintain high codebase quality.
+            In line with industry-leading open-source handbook practices, our engineering team operates under an async-first philosophy. We prioritize deep, focused work over synchronous meetings, and use structured peer reviews to maintain high codebase quality.
           </p>
 
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">1. Async-First Principles</h2>
@@ -696,7 +703,7 @@ wp-content/
 
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">2. Code Review Culture</h2>
           <p className="text-slate-600 dark:text-slate-300 mb-4">
-            We treat code reviews as a collaborative learning process, not a test. We follow Cal.com's best practices:
+            We treat code reviews as a collaborative learning process, not a test. We follow industry-leading best practices:
           </p>
           
           <div className="space-y-4 my-6">
@@ -739,7 +746,7 @@ wp-content/
             Security, Secrets &amp; Compliance
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-            Security is not an afterthought; it is baked into our development lifecycle. Adapted from Cal.com's strict compliance policies, we follow industry best practices to secure our servers, database, and customer data.
+            Security is not an afterthought; it is baked into our development lifecycle. In line with strict enterprise compliance policies, we follow industry best practices to secure our servers, database, and customer data.
           </p>
 
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-4">1. Secrets Management</h2>
@@ -992,11 +999,4 @@ wp-content/
       </div>
     </div>
   );
-}
-
-// Render React
-const rootEl = document.getElementById("root");
-if (rootEl) {
-  const root = createRoot(rootEl);
-  root.render(<Handbook />);
 }
