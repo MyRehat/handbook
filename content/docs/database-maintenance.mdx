@@ -1,0 +1,62 @@
+---
+title: Database & Codebase Maintenance Guidelines
+description: WordPress database stabilization, core upgrades, security hardening, and database optimization.
+---
+
+# Database & Codebase Maintenance Guidelines
+
+Maintaining a healthy database and codebase is critical to prevent sudden site crashes, secure our servers from exploits, and ensure optimal loading speeds.
+
+## 1. WordPress Database Serialization Fix
+
+Our technical audit identified a critical database "time-bomb": a serialized PHP array corruption in `wp_options` under the option key `homey_options`. 
+
+### The Problem
+WordPress and the Homey theme store settings as serialized PHP arrays (e.g., `a:2:{s:4:"name";s:7:"MyRehat";...}`). If a text replacement is performed directly on the SQL dump (such as changing URLs) without adjusting the string length indicators (e.g., changing `s:7:"MyRehat"` to `s:15:"MyRehat-Staging"`), the PHP deserializer fails. 
+
+Currently, our production site is running because Redis holds a valid, cached version of these options. However, if the Redis cache is cleared or expires, the site will attempt to read the corrupted database row and crash immediately.
+
+### The Fix
+We have developed and validated a repair script `/tmp/apply_staging_fix.php` that programmatically deserializes, repairs, and re-serializes the corrupted data. 
+
+Before migrating to our new OpenLiteSpeed VM, this script must be executed on the cloned database:
+
+```bash
+# Run the repair script on the cloned database
+php /tmp/apply_staging_fix.php
+```
+
+## 2. WordPress Core Hardening & Security
+
+Our audit revealed that the WordPress core version was manually faked to `7.0` in `wp-includes/version.php` to silence warning banners. This faking skipped **5 critical security updates**, exposing our server to active public unauthenticated Remote Code Execution (RCE) exploits (such as CVE-2025-58674).
+
+### Security Requirements
+1. **Revert Version Fakes:** Immediately revert the faked version `7.0` to the actual core version `6.8`.
+2. **Apply Core Patches:** Run the official WordPress core update to apply the 5 skipped security patches.
+3. **Quarantine Shell Scripts:** Move legacy `.sh` shell scripts (which contain server credentials and are currently web-accessible in `wp-content/themes/homey-child/`) to a secure, non-public directory: `/home/ubuntu/backups/scripts/`.
+
+## 3. Database Optimization & Hygiene
+
+To keep database queries fast, the following maintenance tasks must be scheduled to run monthly via WP-CLI cron jobs:
+
+### A. Prune Post Revisions
+WordPress saves a new row in `wp_posts` for every single draft edit, causing the database to bloat. We limit revisions to 5 in `wp-config.php`:
+
+```php
+define('WP_POST_REVISIONS', 5);
+```
+
+To clean up existing legacy revisions:
+```bash
+wp post delete $(wp post list --post_type=revision --format=ids) --force
+```
+
+### B. Clean Up Transients
+Expired transients bloat the `wp_options` table:
+```bash
+wp transient delete --expired
+```
+
+---
+
+Next Chapter: [Linear Task & Project Management](/docs/linear-management)

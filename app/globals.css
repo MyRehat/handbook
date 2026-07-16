@@ -1,6 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@theme {
+  --color-brand-50: #f0f7ff;
+  --color-brand-100: #e0effe;
+  --color-brand-200: #bae0fd;
+  --color-brand-300: #7cc8fb;
+  --color-brand-400: #38abf7;
+  --color-brand-500: #0e8fe5;
+  --color-brand-600: #0271c2;
+  --color-brand-700: #035a9e;
+  --color-brand-800: #074c82;
+  --color-brand-900: #0c406d;
+  --color-brand-950: #082949;
+
+  --color-accent-emerald: #10b981;
+  --color-accent-amber: #f59e0b;
+  --color-accent-rose: #f43f5e;
+
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
 
 /* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {

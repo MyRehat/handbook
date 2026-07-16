@@ -1,0 +1,40 @@
+---
+title: Async-First & Review Culture
+description: Guidelines for code reviews, small pull requests, and asynchronous feedback.
+---
+
+# Async-First & Review Culture
+
+Code reviews are not just about finding bugs; they are our primary tool for knowledge sharing, maintaining architectural consistency, and mentoring team members.
+
+## Pull Request Guidelines
+
+To ensure fast reviews and high-quality feedback, we follow these guidelines:
+
+### 1. Keep PRs Small & Atomic
+* **Rule of Thumb:** A single Pull Request should ideally contain **fewer than 300 lines of code**.
+* **Why?** Large PRs are difficult to review, leading to superficial approvals or long delays. Small, focused PRs can be reviewed thoroughly in under 15 minutes.
+* **Scope:** If a feature is large, break it down into smaller, logical sub-tasks (e.g., database schema first, API endpoints second, UI components third).
+
+### 2. Write Descriptive PR Summaries
+Every PR must include:
+* **The Goal:** What problem does this PR solve?
+* **The Solution:** How was it solved?
+* **Testing Steps:** Step-by-step instructions for the reviewer to verify the changes.
+* **Linear Link:** A link to the corresponding Linear issue.
+
+## Reviewer Guidelines
+
+As a reviewer, your goal is to help your teammate ship safe, clean, and performant code.
+
+### 1. Turnaround Time
+* **Priority:** Reviewing PRs is a high-priority task. Do not let PRs sit idle.
+* **Target:** We aim to review all PRs within **24 hours** of submission.
+
+### 2. Constructive Feedback
+* **Be Kind:** Focus on the code, not the person. Use phrases like "What do you think about..." or "Should we consider..." instead of "Fix this" or "This is wrong".
+* **Nitpicks:** Separate critical issues (e.g., security bugs, performance bottlenecks) from subjective style preferences (e.g., variable naming). Prefix subjective suggestions with `nit:`.
+
+---
+
+Next Chapter: [Security, Secrets & Compliance](/docs/security-secrets)

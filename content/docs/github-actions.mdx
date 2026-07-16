@@ -1,0 +1,56 @@
+---
+title: CI/CD with GitHub Actions
+description: Automated validation, security testing, and deployment using GitHub Actions.
+---
+
+# CI/CD with GitHub Actions
+
+We use **GitHub Actions** to automate our build, test, and deployment pipelines. This ensures that every change is thoroughly validated before it touches our staging or production servers.
+
+## Why GitHub Actions over Webhooks?
+
+Historically, we used RunCloud's git deployment webhooks. While simple, webhooks have a critical flaw: **they deploy code blindly on push**. If a developer pushes code with a syntax error, a broken database migration, or a failing test, the webhook pulls it immediately, crashing the live site.
+
+### GitHub Actions is our Gatekeeper
+With GitHub Actions, the server does not pull code directly. Instead, GitHub spins up an isolated runner to:
+1. **Lint and Format:** Ensure the code complies with our coding standards.
+2. **Run Tests:** Execute unit and integration tests (such as PHPUnit or Bun tests).
+3. **Build Assets:** Compile and bundle CSS/JS assets.
+4. **Secure Deploy:** Only if all previous steps pass, the runner securely connects to our OpenLiteSpeed VM via SSH and deploys the changes using `rsync`.
+
+## Our Deployment Workflow
+
+Here is our standard deployment workflow template:
+
+```yaml
+name: Deploy Codebase
+
+on:
+  push:
+    branches:
+      - staging
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Custom Theme & Plugins via Rsync
+        run: |
+          # Sync only custom themes and mu-plugins, excluding git and node_modules
+          rsync -avz --delete \
+            --exclude '.git*' \
+            --exclude 'node_modules' \
+            -e "ssh -i ~/.ssh/id_rsa" \
+            wp-content/themes/homey-myrehat/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/myrehat/wp-content/themes/homey-myrehat/

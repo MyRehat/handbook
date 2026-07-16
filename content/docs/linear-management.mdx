@@ -1,0 +1,51 @@
+---
+title: Linear Task & Project Management
+description: How we organize projects, issues, and Git branch integration using Linear.
+---
+
+# Linear Task & Project Management
+
+We use **Linear** as our single source of truth for all engineering tasks, bug tracking, and product roadmaps. If a task is not in Linear, it does not exist.
+
+## Project Structure
+
+We have organized our workspace into 4 distinct projects. Each project is mapped to specific business goals:
+
+### 1. MyRehat.com Immediate Fixes & Stabilization
+* **Project ID:** `8ffd8ba0-4cfb-46ec-83f0-97c7dfef83ab`
+* **Focus:** High-priority bug fixes, security patches, database stabilization, and immediate operational requirements.
+
+### 2. MyRehat.com Platform Improvements
+* **Project ID:** `705a385d-7912-4792-b9f9-e4df0e512e8b`
+* **Focus:** Feature enhancements, payment gateway migration (Curlec), Google Analytics (GA4) tagging, UI/UX optimizations, and iOS/Android app wrappers.
+
+### 3. Buyhomestay.com Launch
+* **Project ID:** `1b72228b-846c-44f0-8af7-90a4c503c9a2`
+* **Focus:** Setup, landing pages, host portals, property calculators, and launch tasks for our side-project.
+
+### 4. Game Changer AI Improvements
+* **Project ID:** `4e3162c3-d5fa-4712-97ef-36e793b5a8dd`
+* **Focus:** Agentic AI, WhatsApp host chatbots, dynamic pricing engines, and automated listing creators to fulfill our Cradle CIP Accelerate grant milestones.
+
+## Git & Linear Integration
+
+We link our codebase changes directly to Linear issues using a strict branch naming convention.
+
+### Branch Naming Convention
+Every Git branch must be prefixed with the Linear Issue ID (e.g., `MYR-XX`) followed by a short, kebab-case description:
+
+* **Features:** `feature/MYR-54-experience-upload-bug`
+* **Bug Fixes:** `bugfix/MYR-55-price-display-free`
+* **Chore/Infrastructure:** `chore/MYR-60-revert-wp-version`
+
+### Automated State Transitions
+When you create a Pull Request on GitHub:
+1. Include the Linear Issue ID in the PR title (e.g., `[MYR-54] Fix experience listing image upload`).
+2. Include the Linear link in the description.
+3. Our integration will automatically transition the Linear issue to **In Review**.
+4. When the PR is merged into `staging`, the issue is moved to **Staging/QA**.
+5. Once verified on staging and released to production, the issue is moved to **Done**.
+
+---
+
+Next Chapter: [Communication & Sync Rhythm](/docs/sync-rhythm)

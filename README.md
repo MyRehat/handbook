@@ -2,7 +2,7 @@
 
 A highly optimized, professional, and interactive engineering handbook and collaboration guide for MyRehat. This handbook is designed to align co-founders, developers, and administrators on best practices, architecture, workflows, and infrastructure.
 
-Following the pioneering model of industry-leading public handbooks (such as the open-source handbook by Cal.com), this handbook serves a similar purpose: **to foster an open, public-first, and highly transparent engineering culture**. By documenting our standard operating procedures, infrastructure, and collaboration guidelines in a public repository, we establish a single source of truth that drives trust, efficiency, and seamless onboarding for our distributed team.
+Following the pioneering model of industry-leading transparent public startup handbooks, this handbook serves a similar purpose: **to foster an open, public-first, and highly transparent engineering culture**. By documenting our standard operating procedures, infrastructure, and collaboration guidelines in a public repository, we establish a single source of truth that drives trust, efficiency, and seamless onboarding for our distributed team.
 
 This repository hosts the source code and documentation for the MyRehat Engineering Handbook (accessible at `handbook.myrehat.com`).
 

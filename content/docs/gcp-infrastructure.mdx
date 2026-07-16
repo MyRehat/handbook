@@ -1,0 +1,48 @@
+---
+title: GCP Infrastructure & Cost Optimization
+description: Overview of MyRehat's Google Cloud Platform setup, cost leaks, and optimization strategy.
+---
+
+# GCP Infrastructure & Cost Optimization
+
+To support our growth while maintaining fiscal responsibility, we must optimize our Google Cloud Platform (GCP) resources. This section details our infrastructure audit, cost leaks, and the strategy to transition to a high-performance, cost-effective OpenLiteSpeed setup.
+
+## Current Infrastructure Audit
+
+Our audit revealed that we are running 6 VM instances, 5 of which are redundant or completely idle. This setup creates a massive financial leak, burning through our GCP credits rapidly.
+
+| VM Instance Name | Machine Type | Monthly Cost (USD) | Current Status / Purpose | Recommendation |
+| :--- | :--- | :--- | :--- | :--- |
+| `myrehat-runcloud` | `n1-standard-8` | ~$300.00 | Running WordPress Production & Staging | **Migrate to OpenLiteSpeed VM & Decommission** |
+| `myrehat-2-vm` | `n1-standard-32` | ~$1,100.00 | Serving a static "Coming Soon" page | **Stop & Delete Immediately** |
+| `wordpress-myrehat-staging-vm` | `n1-standard-1` | ~$25.00 | Idle / Unused Staging instance | **Stop & Delete Immediately** |
+| `myrehat-my-vm` | `n1-standard-2` | ~$55.00 | Idle / Unused | **Stop & Delete Immediately** |
+| `myrehat-automate` | `n1-standard-4` | ~$110.00 | Idle / Unused automation runner | **Stop & Delete Immediately** |
+| `mysql-myrehat-replica` | `db-n1-standard-2` | ~$120.00 | Database replica (idle) | **Consolidate & Decommission** |
+
+### The Financial Leak
+* **Total Current Burn:** ~$1,710.00 / month (approx. RM 7,500/month)
+* **Remaining GCP Credits:** $20,000 USD (Startup Program credits expiring on December 17, 2026).
+* **Credit Runway (Unoptimized):** ~11 months (expiring around September 2026 if other costs scale).
+* **Credit Runway (Optimized):** **130+ months** (safely past credit expiration, allowing us to utilize credits for high-performance AI workloads instead of idle VMs).
+
+## The Best-Practice Architecture
+
+Instead of managing multiple idle VMs through third-party control panels like RunCloud, we are consolidating our entire stack onto a single, high-performance, custom-configured VM instance running **OpenLiteSpeed**.
+
+### Why OpenLiteSpeed?
+1. **Event-Driven Architecture:** OpenLiteSpeed is extremely fast, handling tens of thousands of concurrent connections with minimal CPU and memory usage.
+2. **Built-in LSCache:** The LiteSpeed Cache plugin for WordPress connects directly to the server's cache module, delivering sub-100ms page loads without heavy Redis/Nginx overhead.
+3. **HTTP/3 & QUIC Support:** Out-of-the-box support for the latest web protocols, improving mobile loading speeds significantly.
+4. **Multi-Tenant Friendly:** Easily hosts production, staging, and ephemeral "Remote Dev" preview environments on a single instance.
+
+### Target VM Specification
+* **Instance Type:** `e2-standard-4` (4 vCPUs, 16 GB Memory)
+* **Operating System:** Ubuntu 24.04 LTS
+* **Web Server:** OpenLiteSpeed
+* **Database:** MariaDB 10.11 (optimized for WordPress)
+* **Estimated Monthly Cost:** ~$120.00 / month
+
+---
+
+Next Chapter: [Git-Driven Development & Deployment](/docs/git-workflow)
